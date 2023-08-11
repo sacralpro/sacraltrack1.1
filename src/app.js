@@ -5,61 +5,31 @@ const helmet = require('helmet');
 const cors = require('cors');
 const { check, validationResult } = require('express-validator');
 
-// FIREBASE
 
-// Import the functions you need from the SDKs you need
-const { initializeApp } = require("firebase/app");
-const { getAnalytics } = require("firebase/analytics");
+// Импорт firebase
 
+import '../firebase'; // инициализировать Firebase
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDSfGa2T6T5YByoplIn53_EQLNkt9qIz6o",
-  authDomain: "sacral-track-app.firebaseapp.com",
-  databaseURL: "https://sacral-track-app-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "sacral-track-app",
-  storageBucket: "sacral-track-app.appspot.com",
-  messagingSenderId: "402642719793",
-  appId: "1:402642719793:web:64d4500797a3a3c1543110",
-  measurementId: "G-QC4LGBENZT"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-if (analytics.isSupported()) {
-  // Инициализация аналитики Firebase
+function App() {
+  return <h1>Sacral Track</h1> 
 }
-
-// Инициализация Express приложения
-const expressApp = express();
-
-
-// Analytics
-
-const ua = require('universal-analytics');
-const visitor = ua('UA-XXXXXXXXX-X'); // Замените 'UA-XXXXXXXXX-X' на ваш код отслеживания Google Analytics
-
-
 
 // Импорт модуля multer
 const multer = require('multer');
 
 // Импорты роутеров, контроллеров
-const usersRouter = require('./backend/routes/users');
-const tracksRouter = require('./backend/routes/tracks');
-const commentsCtrl = require('./backend/controllers/comments');
-const likesCtrl = require('./backend/controllers/likes');
-const repostsCtrl = require('./backend/controllers/reposts');
-const uploadCtrl = require('./backend/controllers/upload');
-const apiCtrl = require('./backend/controllers/api');
+const usersRouter = require('../backend/routes/users');
+const tracksRouter = require('../backend/routes/tracks');
+const commentsCtrl = require('../backend/controllers/comments');
+const likesCtrl = require('../backend/controllers/likes');
+const repostsCtrl = require('../backend/controllers/reposts');
+const uploadCtrl = require('../backend/controllers/upload');
+const apiCtrl = require('../backend/controllers/api');
 
 
 
 // Импорт модели Track
-const track = require('./backend/models/tracks');
+const track = require('../backend/models/tracks');
 
 
 // Настройки безопасности
@@ -82,7 +52,7 @@ const upload = multer({storage: multer.memoryStorage()});
 
 // Настройка треков
 
-const tracksCtrl = require('./backend/controllers/tracks');
+const tracksCtrl = require('../backend/controllers/tracks');
 
 // Роуты для загрузки треков
 app.post('/tracks', upload.single('track'), uploadCtrl.uploadTrack);
