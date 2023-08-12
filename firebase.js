@@ -22,8 +22,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
-if (analytics.isSupported()) {
-  // Инициализация аналитики Firebase
+
+if (typeof window !== 'undefined' && analytics.isSupported()) {
+  // код инициализации аналитики
 }
 
 // Инициализация Express приложения

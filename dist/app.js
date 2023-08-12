@@ -1,6 +1,6 @@
 "use strict";
 
-require("../firebase");
+var _reactRouterDom = require("react-router-dom");
 // Импорты модулей
 var express = require('express');
 var morgan = require('morgan');
@@ -9,15 +9,7 @@ var cors = require('cors');
 var _require = require('express-validator'),
   check = _require.check,
   validationResult = _require.validationResult;
-
-// Импорт firebase
-
-// инициализировать Firebase
-
-function App() {
-  return /*#__PURE__*/React.createElement("h1", null, "Sacral Track");
-}
-
+var app = express();
 // Импорт модуля multer
 var multer = require('multer');
 
@@ -43,8 +35,8 @@ app.use(cors());
 app.use(morgan('dev'));
 
 // Маршрутизация(Роуты)
-app.use('/users', usersRouter);
-app.use('/tracks', tracksRouter);
+app.use('/users', usersRouter(app));
+app.use('/tracks', tracksRouter(app));
 
 // Настройка Multer для загрузки файлов
 var upload = multer({
@@ -121,9 +113,3 @@ app.use(cors({
     callback(null, true);
   }
 }));
-
-// Загрузка трека
-app.post('/tracks', uploadCtrl.uploadTrack);
-
-// Получение треков пользователя  
-app.get('/tracks/my', uploadCtrl.getUserTracks);

@@ -4,15 +4,13 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
 const { check, validationResult } = require('express-validator');
+const app = express();
 
 
-// Импорт firebase
+import { Route } from 'react-router-dom';
 
-import '../firebase'; // инициализировать Firebase
 
-function App() {
-  return <h1>Sacral Track</h1> 
-}
+
 
 // Импорт модуля multer
 const multer = require('multer');
@@ -44,8 +42,9 @@ app.use(morgan('dev'));
 
 
 // Маршрутизация(Роуты)
-app.use('/users', usersRouter);
-app.use('/tracks', tracksRouter);
+app.use('/users', usersRouter(app));
+app.use('/tracks', tracksRouter(app));
+
 
 // Настройка Multer для загрузки файлов
 const upload = multer({storage: multer.memoryStorage()});
@@ -126,9 +125,3 @@ app.use(cors({
     callback(null, true);
   }  
 }));
-
-// Загрузка трека
-app.post('/tracks', uploadCtrl.uploadTrack);
-
-// Получение треков пользователя  
-app.get('/tracks/my', uploadCtrl.getUserTracks);
