@@ -3,14 +3,10 @@ const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
-const { check, validationResult } = require('express-validator');
+
 const app = express();
 
-
-import { Route } from 'react-router-dom';
-
-
-
+const { Route } = require('react-router-dom');
 
 // Импорт модуля multer
 const multer = require('multer');
@@ -24,80 +20,40 @@ const repostsCtrl = require('../backend/controllers/reposts');
 const uploadCtrl = require('../backend/controllers/upload');
 const apiCtrl = require('../backend/controllers/api');
 
-
-
-// Импорт модели Track
-const track = require('../backend/models/tracks');
-
-
 // Настройки безопасности
 app.use(helmet());
 app.use(helmet.xssFilter());
-app.use(helmet.noSniff()); 
-
-
-// Конфигурация CORS, логгирования 
-app.use(cors());
-app.use(morgan('dev'));  
+app.use(helmet.noSniff());
 
 
 // Маршрутизация(Роуты)
-app.use('/users', usersRouter(app));
-app.use('/tracks', tracksRouter(app));
-
+app.use('/users', usersRouter);
+app.use('/tracks', tracksRouter);
 
 // Настройка Multer для загрузки файлов
-const upload = multer({storage: multer.memoryStorage()});
-
-// Настройка треков
-
-const tracksCtrl = require('../backend/controllers/tracks');
-
-// Роуты для загрузки треков
-app.post('/tracks', upload.single('track'), uploadCtrl.uploadTrack);
-app.get('/tracks', tracksCtrl.getAll);
-app.get('/tracks/:id', tracksCtrl.getById); 
-app.post('/purchase', tracksCtrl.purchase);
-// Роуты для получения треков пользователя
-app.get('/user/tracks', uploadCtrl.getUserTracks);
-
-// взаимодействие пользоватлей с треками
-app.post('/tracks/:id/reposts', repostsCtrl.repostTrack);
-app.get('/tracks/:id/download', tracksCtrl.downloadTrack);
-app.get('/tracks/:id/play', tracksCtrl.playTrack);
-
-app.get('/tracks', (req, res) => {
-  // Логика для обработки GET-запроса на /tracks
-  // Например, получение всех треков из базы данных и отправка их в ответе
-  Track.find({}, (err, tracks) => {
-    if (err) {
-      // Обработка ошибки
-      console.error(err);
-      res.status(500).json({ error: 'Internal Server Error' });
-    } else {
-      // Отправка треков в ответе
-      res.json(tracks);
-    }
-  });
-});
-
-
-
-module.exports = app;
-
+const upload = multer({ storage: multer.memoryStorage() });
 
 // Роуты для внешних API
-
 app.get('/api/spotify/top', apiCtrl.getSpotifyTopHits);
 
-//Валидация 
-const {validate} = require('express-validator');
-
+// Валидация
+const { check, validationResult } = require('express-validator');
 app.use([
   check('param').isEmail(),
   check('param2').isLength({ min: 5 }),
 ]);
 
+app.post('/purchase', [
+  // Валидация параметров здесь
+], (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  // Логика для обработки запроса при успешной валидации
+  // ...
+});
 
 // Обработка ошибок
 app.use((err, req, res, next) => {
@@ -111,17 +67,22 @@ const server = app.listen(process.env.PORT || 3000, () => {
 });
 
 
-// CORS Разрешаем запросы с этого origin
-const allowedOrigins = ['https://www.example.com'];
+// Конфигурация CORS и логгирования
+app.use(cors());
+app.use(morgan('dev'));
 
-// Настройка CORS
+// CORS - Разрешаем запросы с указанного origin
+const allowedOrigins = ['https://www.example.com'];
 app.use(cors({
   origin: (origin, callback) => {
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1){
-       const msg = 'Недопустимый origin: ${origin}';
-       return callback(new Error(msg), false);
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      const msg = `Недопустимый origin: ${origin}`;
+      return callback(new Error(msg), false);
     }
-    callback(null, true);
-  }  
+  }
 }));
+
+module.exports = app;

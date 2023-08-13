@@ -1,29 +1,28 @@
-// Импортируем модули
+// Импорт модулей
 import './app';
-import './firebase'; 
+import './firebase';
 
-// Импортируем React и React Router 
+// Импорт React 
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+
+// Импорт Router
 import { BrowserRouter } from 'react-router-dom';
 
-// Импортируем корневой компонент App
+// Импорт App
 import App from './App';
 
-//...другие импорты
-
+// Проверка на среду выполнения
 if (typeof window !== 'undefined') {
-  require('./firebase'); 
+  require('./firebase');
 }
 
-// Подключаем React к DOM
-const container = document.getElementById('root');
-const root = createRoot(container);
+// Инициализация React
+const rootElement = document.getElementById('root');
+const root = createRoot(rootElement);
 
-// Оборачиваем приложение в BrowserRouter
 root.render(
   <BrowserRouter>
     <App />
   </BrowserRouter>
 );
-
