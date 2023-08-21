@@ -6,8 +6,20 @@ var morgan = require('morgan');
 var helmet = require('helmet');
 var cors = require('cors');
 var app = express();
+
+// Импорт роутов
 var _require = require('react-router-dom'),
   Route = _require.Route;
+function App() {
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Route, {
+    path: "./src/pages/index.tsx",
+    exact: true,
+    component: HomePage
+  }), /*#__PURE__*/React.createElement(Route, {
+    path: "/profile",
+    component: ProfilePage
+  }));
+}
 
 // Импорт модуля multer
 var multer = require('multer');

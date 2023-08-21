@@ -6,7 +6,19 @@ const cors = require('cors');
 
 const app = express();
 
+// Импорт роутов
 const { Route } = require('react-router-dom');
+
+function App() {
+
+  return (
+    <div>
+      <Route path="./src/pages/index.tsx" exact component={HomePage} />
+      <Route path="/profile" component={ProfilePage} />
+    </div>
+  );
+}
+
 
 // Импорт модуля multer
 const multer = require('multer');
@@ -54,6 +66,12 @@ app.post('/purchase', [
   // Логика для обработки запроса при успешной валидации
   // ...
 });
+
+
+
+
+
+
 
 // Обработка ошибок
 app.use((err, req, res, next) => {
