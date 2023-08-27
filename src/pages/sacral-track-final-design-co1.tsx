@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
-import LeftSideBar from "../components/left-side-bar";
-import ContainerTrackListForm from "../components/container-track-list-form";
-import Audio1 from "../components/audio1";
+import LeftSideBar from "../components1/left-side-bar";
+import ContainerTrackListForm from "../components1/container-track-list-form";
+import Audio1 from "../components1/audio1";
 
 const SacralTrackFinalDesignCo1: NextPage = () => {
   return (

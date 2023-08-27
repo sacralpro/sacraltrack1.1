@@ -1,42 +1,43 @@
 const path = require('path');
 
 module.exports = {
-
-  // Режим разработки 
   mode: 'development',
-
-  // Создание source maps
-  devtool: 'inline-source-map',
-
-  // Слежение за изменениями
-  watch: true,
-
-  // Входная точка приложения
   entry: './src/index.js',
-  
-  // Выходная директория и имя файла
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
   },
-
-  // Настройки модулей
   module: {
-
-    // Правила для загрузчиков
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader'
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env', '@babel/preset-react']
         }
       },
-
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader'] 
       }
     ]
+  },
+  resolve: {
+    fallback: {
+      "fs": false,
+      "path": "path-browserify",
+      "http": "stream-http",
+      "url": require.resolve("url/"), 
+      "crypto": require.resolve("crypto-browserify"),
+      "util": "util/",
+      "zlib": "browserify-zlib",
+      "mime": false
+      // другие модули
+    }
+  },
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    compress: true,
+    port: 3000,
   }
 };

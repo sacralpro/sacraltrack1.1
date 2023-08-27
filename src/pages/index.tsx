@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useCallback } from "react";
-import LeftSideBar from "../components/left-side-bar";
-import ContainerTrackListForm from "../components/container-track-list-form";
-import Top100 from "../components/top100";
-import Playyer from "../components/playyer";
+import LeftSideBar from "../components1/left-side-bar";
+import ContainerTrackListForm from "../components1/container-track-list-form";
+import Top100 from "../components1/top100";
+import Playyer from "../components1/playyer";
 
 const SacralTrackFinalDesignCo: NextPage = () => {
   const onGroupButtonClick = useCallback(() => {
